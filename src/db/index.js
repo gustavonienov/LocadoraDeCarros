@@ -1,8 +1,10 @@
 import Sequelize from "sequelize";
 import databaseConfig from "../db/database.js";
 import Car from "../models/Car.js";
+import Customer from "../models/Customer.js";
+import Rent from "../models/Rent.js";
 
-const models = [Car];
+const models = [Car, Customer, Rent];
 
 class Database {
     constructor() {

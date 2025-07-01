@@ -1,5 +1,5 @@
-<form>
-    <div class="row mb-3">
+<form id="carForm">
+    <div class="row mb-3" hidden>
         <label for="inputID" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="id" value="Exibir ID aqui" aria-label="Disabled input example"
@@ -9,25 +9,25 @@
     <div class="row mb-3">
         <label for="inputMarca" class="col-sm-2 col-form-label">Marca</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputMarca">
+            <input type="text" id="marca" name="marca" class="form-control" id="inputMarca">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputModelo" class="col-sm-2 col-form-label">Modelo</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputModelo">
+            <input type="text" id="modelo" name="modelo" class="form-control" id="inputModelo">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputAno" class="col-sm-2 col-form-label">Ano</label>
         <div class="col-sm-10">
-            <input type="number" class="form-control" id="inputAno">
+            <input type="number" id="ano" name="ano" class="form-control" id="inputAno">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputPlaca" class="col-sm-2 col-form-label">Placa</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputPlaca">
+            <input type="text" id="placa" name="placa" class="form-control" id="inputPlaca">
         </div>
     </div>
     <div class="row mb-3">
@@ -42,3 +42,27 @@
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
+<script>
+    document.getElementById('carForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const data = {
+            placa: document.getElementById('placa').value,
+            marca: document.getElementById('marca').value,
+            modelo: document.getElementById('modelo').value,
+            ano: Number(document.getElementById('ano').value),
+            disponivel: document.getElementById('disponivel').value === "true"
+        };
+        // Troque a URL abaixo conforme sua rota de cadastro/edição
+        const response = await fetch('/car', {
+            method: 'POST', // ou 'PUT' para edição
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            alert('Carro salvo com sucesso!');
+        } else {
+            const error = await response.json();
+            alert('Erro: ' + error.error);
+        }
+    });
+</script>

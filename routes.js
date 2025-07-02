@@ -5,13 +5,13 @@ import rentController from "./src/Controller/rentController.js";
 
 const routes = new Router();
 
-routes.get('/api/locadora', carController.index);
+routes.get('/cars', carController.index);
 routes.get('/car', carController.show);
 routes.post('/car', carController.store);
 routes.put('/car/:placa',carController.update);
 routes.delete('/car/:placa',carController.destroy);
 
-routes.get('/api/clientes', customerController.index);
+routes.get('/customers', customerController.index);
 routes.get('/cust', customerController.show);
 routes.post('/cust', customerController.store);
 routes.put('/cust/:cpf',customerController.update);

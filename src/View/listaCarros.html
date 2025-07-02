@@ -16,7 +16,7 @@
 </div>
 
 <script>
-    fetch('/api/locadora')
+    fetch('/cars')
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('tabela-carros-corpo');

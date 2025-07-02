@@ -15,7 +15,7 @@
 </div>
 
 <script>
-    fetch('/api/clientes')
+    fetch('/customers')
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('tabela-clientes-corpo');

@@ -13,7 +13,7 @@
     "dev": "nodemon Server.js"
   },
   "name": "locadoradecarros",
-  "description": "Desenvolvido por Cauê Mayolo da Silveira e Gustavo Henrique Nienov",
+  "description": "Desenvolvido por Cauê Mayolo da Silveira e Gustavo Henrique Nienov.",
   "version": "1.0.0",
   "main": "Server.js",
   "type": "module",

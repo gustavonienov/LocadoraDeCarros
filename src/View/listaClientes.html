@@ -7,7 +7,6 @@
                 <th>CPF</th>
                 <th>Telefone</th>
                 <th>Email</th>
-                <th>Ações</th>
             </tr>
         </thead>
         <tbody id="tabela-clientes-corpo">
@@ -16,19 +15,6 @@
 </div>
 
 <script>
-    async function excluirCliente(cpf) {
-        if (confirm('Tem certeza que deseja excluir este cliente?')) {
-            const response = await fetch(`/cust/${cpf}`, {
-                method: 'DELETE'
-            });
-            if (response.ok) {
-                alert('Cliente excluído com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro ao excluir cliente.');
-            }
-        }
-    }
     fetch('/api/clientes')
         .then(response => response.json())
         .then(data => {
@@ -42,9 +28,6 @@
                         <td>${cliente.cpf}</td>
                         <td>${cliente.telefone}</td>
                         <td>${cliente.email}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="excluirCliente('${cliente.cpf}')">Excluir</button>
-                        </td>
                     </tr>
                 `;
                 tbody.innerHTML += row;

@@ -7,7 +7,7 @@ class rentController {
 
     async index(req, res) {
         let rents = await Rent.findAll({
-            attributes: ['valor', 'dataInicio', 'dataFim'],
+            attributes: ['id','valor', 'dataInicio', 'dataFim'],
             include: [
                 {
                     model: Customer,
@@ -89,6 +89,9 @@ class rentController {
                 dataFim,
             });
         }
+
+        Car.update({ disponivel: false }, { where: { id: carId } });
+
         return res.json(rent);
     }
 
@@ -143,6 +146,9 @@ class rentController {
         await Rent.destroy({
             where: { id },
         });
+
+        Car.update({ disponivel: true }, { where: { id: carId } });
+
         return res.send();
     }
 }

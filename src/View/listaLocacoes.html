@@ -8,6 +8,7 @@
                 <th>Data Início</th>
                 <th>Data Fim</th>
                 <th>Valor Total</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody id="tabela-locacoes-corpo">
@@ -24,16 +25,39 @@
         tbody.innerHTML = '';
 
         locacoes.forEach(locacao => {
+            console.log(locacao);
+
             const row = `
                 <tr>
                     <td>${locacao.customer ? locacao.customer.cpf : 'Não encontrado'}</td>
                     <td>${locacao.car ? locacao.car.placa : 'Não encontrado'}</td>
-                    <td>${locacao.dataInicio ? locacao.dataInicio.substring(0,10) : ''}</td>
-                    <td>${locacao.dataFim ? locacao.dataFim.substring(0,10) : ''}</td>
-                    <td>${Number(locacao.valor).toFixed(2)}</td>
+                    <td>${locacao.dataInicio ? locacao.dataInicio.substring(0, 10) : ''}</td>
+                    <td>${locacao.dataFim ? locacao.dataFim.substring(0, 10) : ''}</td>
+                    <td>R$${Number(locacao.valor).toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-primary btn-md" onclick="excluirLocacao('${locacao.id}')">Finalizar locação</button>
+                    </td>
                 </tr>
             `;
             tbody.innerHTML += row;
         });
     })();
+    async function excluirLocacao(id) {
+        if (confirm('Deseja realmente excluir esta locação?')) {
+            try {
+                const response = await fetch(`/rent/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    alert('Locação excluída com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro ao excluir a locação.');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir a locação:', error);
+                alert('Erro ao excluir a locação.');
+            }
+        }
+    }
 </script>

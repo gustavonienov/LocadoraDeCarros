@@ -20,7 +20,7 @@ routes.delete('/cust/:cpf',customerController.destroy);
 routes.get('/rents', rentController.index);
 routes.get('/rent', rentController.show);
 routes.post('/rent', rentController.store);
-routes.put('/rent/:cpf',rentController.update);
-routes.delete('/rent/:cpf',rentController.destroy);
+routes.put('/rent/:id',rentController.update);
+routes.delete('/rent/:id',rentController.destroy);
 
 export default routes;

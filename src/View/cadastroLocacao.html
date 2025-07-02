@@ -1,11 +1,11 @@
-<form>
-    <div class="row mb-3">
+<form id="formRent">
+    <div class="row mb-3" hidden>
         <label for="inputID" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" value="Exibir ID aqui" aria-label="Disabled input example" disabled readonly>
+            <input type="text" class="form-control" id="id" value="Exibir ID aqui" aria-label="Disabled input example"
+                disabled readonly>
         </div>
     </div>
-
     <div class="row mb-3">
         <label for="selectCliente" class="col-sm-2 col-form-label">Cliente</label>
         <div class="col-sm-10">
@@ -13,7 +13,6 @@
             </select>
         </div>
     </div>
-
     <div class="row mb-3">
         <label for="selectCarro" class="col-sm-2 col-form-label">Carro</label>
         <div class="col-sm-10">
@@ -21,7 +20,6 @@
             </select>
         </div>
     </div>
-
     <div class="row mb-3">
         <label for="inputDataInicio" class="col-sm-2 col-form-label">Data de Início</label>
         <div class="col-sm-10">
@@ -45,28 +43,66 @@
 
 <script>
     (async function selects() {
+        // Busque clientes e carros em endpoints separados
+        const [clientesResp, carrosResp] = await Promise.all([
+            fetch('/api/clientes'),
+            fetch('/api/locadora')
+        ]);
+        const clientesData = await clientesResp.json();
+        const carrosData = await carrosResp.json();
+
+        // Preenche o select de clientes
         const selectCliente = document.getElementById('selectCliente');
-        const selectCarro = document.getElementById('selectCarro');
-
-        const response = await fetch('/api/locadora');
-        const data = await response.json();
-
         selectCliente.innerHTML = '<option selected disabled value="">Selecione um cliente</option>';
-        data.clientes.forEach(cliente => {
+        clientesData.clientes.forEach(cliente => {
             const option = document.createElement('option');
             option.value = cliente.id;
             option.textContent = `${cliente.nome} (CPF: ${cliente.cpf})`;
             selectCliente.appendChild(option);
         });
 
+        // Preenche o select de carros disponíveis
+        const selectCarro = document.getElementById('selectCarro');
         selectCarro.innerHTML = '<option selected disabled value="">Selecione um carro</option>';
-        const carrosDisponiveis = data.carros.filter(carro => carro.disponivel);
-        
+        const carrosDisponiveis = carrosData.carros.filter(carro => carro.disponivel);
+
         carrosDisponiveis.forEach(carro => {
             const option = document.createElement('option');
             option.value = carro.id;
             option.textContent = `${carro.marca} ${carro.modelo} (Placa: ${carro.placa})`;
             selectCarro.appendChild(option);
+        });
+
+        document.getElementById('formRent').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const customerId = document.getElementById('selectCliente').value;
+            const carId = document.getElementById('selectCarro').value;
+            const dataInicio = document.getElementById('inputDataInicio').value;
+            const dataFim = document.getElementById('inputDataFim').value;
+            const valor = document.getElementById('inputValor').value;
+
+            const data = {
+                customerId: Number(customerId),
+                carId: Number(carId),
+                dataInicio,
+                dataFim,
+                valor: Number(valor)
+            };
+
+            const response = await fetch('/rent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Locação cadastrada com sucesso!');
+                window.location.reload();
+            } else {
+                const error = await response.json();
+                alert('Erro ao cadastrar locação: ' + (error.error || 'Erro desconhecido'));
+            }
         });
     })();
 </script>

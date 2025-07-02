@@ -50,7 +50,7 @@
             marca: document.getElementById('marca').value,
             modelo: document.getElementById('modelo').value,
             ano: Number(document.getElementById('ano').value),
-            disponivel: document.getElementById('alugado').value === "true"
+            disponivel: !document.getElementById('alugado').checked
         };
         const response = await fetch('/car', {
             method: 'POST', // ou 'PUT' para edição

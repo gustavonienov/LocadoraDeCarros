@@ -6,7 +6,7 @@ class Customer extends Model {
             {
                 nome: Sequelize.STRING,
                 cpf: Sequelize.STRING,
-                telefone: Sequelize.INTEGER,
+                telefone: Sequelize.STRING,
                 email: Sequelize.STRING,
             },
             {

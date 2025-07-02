@@ -26,7 +26,7 @@ class customerController {
         const schema = Yup.object().shape({
             cpf: Yup.string().required().length(11),
             nome: Yup.string().required(),
-            telefone: Yup.number().required(),
+            telefone: Yup.string().required(),
             email: Yup.string().required().email(),
         });
         if (!(await schema.isValid(req.body))) {
@@ -61,7 +61,7 @@ class customerController {
         const schema = Yup.object().shape({
             cpf: Yup.string().required().length(11),
             nome: Yup.string().required(),
-            telefone: Yup.number().required(),
+            telefone: Yup.string().required(),
             email: Yup.string().required().email(),
         });
         if (!(await schema.isValid(req.body))) {

@@ -5,6 +5,8 @@ class Rent extends Model {
         super.init(
             {
                 valor: Sequelize.DOUBLE,
+                dataInicio: Sequelize.DATE,
+                dataFim: Sequelize.DATE,
             },
             {
                 sequelize,

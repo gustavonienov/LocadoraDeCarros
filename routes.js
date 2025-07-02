@@ -1,6 +1,7 @@
 import { Router } from "express";
 import carController from "./src/Controller/carController.js";
 import customerController from "./src/Controller/customerController.js";
+import rentController from "./src/Controller/rentController.js";
 
 const routes = new Router();
 
@@ -15,5 +16,11 @@ routes.get('/cust', customerController.show);
 routes.post('/cust', customerController.store);
 routes.put('/cust/:cpf',customerController.update);
 routes.delete('/cust/:cpf',customerController.destroy);
+
+routes.get('/rents', rentController.index);
+routes.get('/rent', rentController.show);
+routes.post('/rent', rentController.store);
+routes.put('/rent/:cpf',rentController.update);
+routes.delete('/rent/:cpf',rentController.destroy);
 
 export default routes;

@@ -3,12 +3,12 @@
     <table class="table table-striped table-hover mt-3">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Ano</th>
                 <th>Placa</th>
                 <th>Disponível</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody id="tabela-carros-corpo">
@@ -17,6 +17,19 @@
 </div>
 
 <script>
+    async function excluirCarro(placa) {
+        if (confirm('Tem certeza que deseja excluir este carro?')) {
+            const response = await fetch(`/car/${placa}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                alert('Carro excluído com sucesso!');
+                location.reload();
+            } else {
+                alert('Erro ao excluir carro.');
+            }
+        }
+    }
     fetch('/api/locadora')
         .then(response => response.json())
         .then(data => {
@@ -30,12 +43,14 @@
 
                 const row = `
                         <tr>
-                            <td>${carro.id}</td>
                             <td>${carro.marca}</td>
                             <td>${carro.modelo}</td>
                             <td>${carro.ano}</td>
                             <td>${carro.placa}</td>
                             <td>${disponibilidade}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="excluirCarro('${carro.placa}')">Excluir</button>
+                            </td>
                         </tr>
                     `;
                 tbody.innerHTML += row;

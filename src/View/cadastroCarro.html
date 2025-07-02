@@ -9,31 +9,31 @@
     <div class="row mb-3">
         <label for="inputMarca" class="col-sm-2 col-form-label">Marca</label>
         <div class="col-sm-10">
-            <input type="text" id="marca" name="marca" class="form-control" id="inputMarca">
+            <input type="text" id="marca" name="marca" class="form-control" >
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputModelo" class="col-sm-2 col-form-label">Modelo</label>
         <div class="col-sm-10">
-            <input type="text" id="modelo" name="modelo" class="form-control" id="inputModelo">
+            <input type="text" id="modelo" name="modelo" class="form-control" >
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputAno" class="col-sm-2 col-form-label">Ano</label>
         <div class="col-sm-10">
-            <input type="number" id="ano" name="ano" class="form-control" id="inputAno">
+            <input type="number" id="ano" name="ano" class="form-control" >
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputPlaca" class="col-sm-2 col-form-label">Placa</label>
         <div class="col-sm-10">
-            <input type="text" id="placa" name="placa" class="form-control" id="inputPlaca">
+            <input type="text" id="placa" name="placa" class="form-control">
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-sm-10 offset-sm-2">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                <input class="form-check-input" type="checkbox" id="alugado">
                 <label class="form-check-label" for="gridCheck1">
                     Alugado
                 </label>
@@ -50,9 +50,8 @@
             marca: document.getElementById('marca').value,
             modelo: document.getElementById('modelo').value,
             ano: Number(document.getElementById('ano').value),
-            disponivel: document.getElementById('disponivel').value === "true"
+            disponivel: document.getElementById('alugado').value === "true"
         };
-        // Troque a URL abaixo conforme sua rota de cadastro/edição
         const response = await fetch('/car', {
             method: 'POST', // ou 'PUT' para edição
             headers: { 'Content-Type': 'application/json' },

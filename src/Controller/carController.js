@@ -5,7 +5,7 @@ class CarController {
 
     async index(req, res) {
         let cars = await Car.findAll();
-        return res.json(cars);
+        return res.json({carros: cars});
     }
 
     async show(req, res) {

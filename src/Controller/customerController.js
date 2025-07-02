@@ -5,7 +5,7 @@ class customerController {
 
     async index(req, res) {
         let custs = await Customer.findAll();
-        return res.json(custs);
+        return res.json({ clientes: custs });
     }
 
     async show(req, res) {

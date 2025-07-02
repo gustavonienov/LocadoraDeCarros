@@ -1,5 +1,5 @@
-<form>
-    <div class="row mb-3">
+<form id="clienteForm">
+    <div class="row mb-3" hidden>
         <label for="inputID" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="id" value="Exibir ID aqui" aria-label="Disabled input example"
@@ -9,26 +9,48 @@
     <div class="row mb-3">
         <label for="inputNome" class="col-sm-2 col-form-label">Nome</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputNome">
+            <input type="text" class="form-control" id="nome">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputCpf" class="col-sm-2 col-form-label">CPF</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputCpf">
+            <input type="text" class="form-control" id="cpf">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputTelefone" class="col-sm-2 col-form-label">Telefone</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputTelefone">
+            <input type="text" class="form-control" id="telefone">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail">
+            <input type="email" class="form-control" id="email">
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
+<script>
+    document.getElementById('clienteForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const data = {
+            cpf: document.getElementById('cpf').value,
+            nome: document.getElementById('nome').value,
+            telefone: document.getElementById('telefone').value,
+            email: document.getElementById('email').value
+        };
+        const response = await fetch('/cust', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            alert('Cliente salvo com sucesso!');
+        } else {
+            const error = await response.json();
+            alert('Erro: ' + error.error);
+        }
+    });
+</script>

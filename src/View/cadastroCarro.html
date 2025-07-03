@@ -52,8 +52,21 @@
             ano: Number(document.getElementById('ano').value),
             disponivel: !document.getElementById('alugado').checked
         };
+
+        const buscaPlaca = await fetch(`/car/?placa=${data.placa}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (buscaPlaca.ok) {
+            const carroExistente = await buscaPlaca.json();
+            if (carroExistente.length > 0) {
+                alert('Já existe um carro cadastrado com essa placa.');
+                return;
+            }
+        }
+
         const response = await fetch('/car', {
-            method: 'POST', // ou 'PUT' para edição
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });

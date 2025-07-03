@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Customer from "../models/Customer.js";
+import Customer from "../Models/Customer.js";
 
 class customerController {
 
@@ -10,7 +10,7 @@ class customerController {
 
     async show(req, res) {
         const schema = Yup.object().shape({
-            cpf: Yup.string().required().length(11),
+            cpf: Yup.string().required.length(11),
         });
         if (!(await schema.isValid(req.query))) {
             return res.status(400).json({ error: "Schema is not valid." });

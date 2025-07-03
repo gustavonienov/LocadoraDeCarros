@@ -1,7 +1,7 @@
 import * as Yup from "yup";
-import Rent from "../models/Rent.js";
-import Customer from "../models/Customer.js";
-import Car from "../models/Car.js";
+import Rent from "../Models/Rent.js";
+import Customer from "../Models/Customer.js";
+import Car from "../Models/Car.js";
 
 class rentController {
 
@@ -115,18 +115,16 @@ class rentController {
             return res.status(400).json({ error: "Schema is not valid." });
         }
         const { id: key } = req.params;
-        //const { id } = req.body;
-        //const { customerId } = req.body;
-        //const { carId } = req.body;
+        const { customerId } = req.body;
+        const { carId } = req.body;
         const { valor } = req.body;
-        //const { dataInicio } = req.body;
+        const { dataInicio } = req.body;
         const { dataFim } = req.body;
         const dados = {
-            //id,
-            //customerId,
-            //carId,
+            customerId,
+            carId,
             valor,
-            //dataInicio,
+            dataInicio,
             dataFim,
         };
         await Rent.update(dados, {
@@ -143,9 +141,12 @@ class rentController {
             return res.status(400).json({ error: "Schema is not valid." });
         }
         const { id } = req.params;
-        await Rent.destroy({
-            where: { id },
-        });
+
+        const rent = await Rent.findByPk(id);
+        
+        const { carId } = rent;
+        
+        await rent.destroy();
 
         Car.update({ disponivel: true }, { where: { id: carId } });
 

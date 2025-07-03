@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Car from "../../src/models/Car.js";
+import Car from "../Models/Car.js";
 
 class CarController {
 

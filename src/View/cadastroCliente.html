@@ -41,11 +41,25 @@
             telefone: document.getElementById('telefone').value,
             email: document.getElementById('email').value
         };
-        const response = await fetch('/cust', { 
+
+        const buscaCpf = await fetch(`/customer/?cpf=${data.cpf}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (buscaCpf.ok) {
+            const clienteExistente = await buscaCpf.json();
+            if (clienteExistente.length > 0) {
+                alert('Já existe um cliente cadastrado com este CPF.');
+                return;
+            }
+        }
+
+        const response = await fetch('/customer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+
         if (response.ok) {
             alert('Cliente salvo com sucesso!');
         } else {

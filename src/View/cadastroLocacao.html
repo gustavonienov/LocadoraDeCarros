@@ -43,15 +43,13 @@
 
 <script>
     (async function selects() {
-        // Busque clientes e carros em endpoints separados
         const [clientesResp, carrosResp] = await Promise.all([
-            fetch('/api/clientes'),
-            fetch('/api/locadora')
+            fetch('/customers'),
+            fetch('/cars')
         ]);
         const clientesData = await clientesResp.json();
         const carrosData = await carrosResp.json();
 
-        // Preenche o select de clientes
         const selectCliente = document.getElementById('selectCliente');
         selectCliente.innerHTML = '<option selected disabled value="">Selecione um cliente</option>';
         clientesData.clientes.forEach(cliente => {
@@ -61,7 +59,6 @@
             selectCliente.appendChild(option);
         });
 
-        // Preenche o select de carros disponíveis
         const selectCarro = document.getElementById('selectCarro');
         selectCarro.innerHTML = '<option selected disabled value="">Selecione um carro</option>';
         const carrosDisponiveis = carrosData.carros.filter(carro => carro.disponivel);

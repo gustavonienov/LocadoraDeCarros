@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 import databaseConfig from "../db/database.js";
-import Car from "../models/Car.js";
-import Customer from "../models/Customer.js";
-import Rent from "../models/Rent.js";
+import Car from "../Models/Car.js";
+import Customer from "../Models/Customer.js";
+import Rent from "../Models/Rent.js";
 
 const models = [Car, Customer, Rent];
 

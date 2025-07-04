@@ -72,20 +72,18 @@
 
         document.getElementById('formRent').addEventListener('submit', async function (e) {
             e.preventDefault();
-
-            const customerId = document.getElementById('selectCliente').value;
-            const carId = document.getElementById('selectCarro').value;
-            const dataInicio = document.getElementById('inputDataInicio').value;
-            //const dataFim = document.getElementById('inputDataFim').value;
-            const valor = document.getElementById('inputValor').value;
-
             const data = {
-                customerId: Number(customerId),
-                carId: Number(carId),
-                dataInicio,
-                //dataFim,
-                valor: Number(valor)
+                customerId: document.getElementById('selectCliente').value,
+                carId: document.getElementById('selectCarro').value,
+                dataInicio: document.getElementById('inputDataInicio').value,
+                //dataFim: document.getElementById('inputDataFim').value,
+                valor: document.getElementById('inputValor').value,
             };
+
+            if (data.dataInicio < new Date().toISOString().split('T')[0]) {
+                alert('A data de início não pode ser anterior à data atual.');
+                return;
+            }
 
             const response = await fetch('/rent', {
                 method: 'POST',

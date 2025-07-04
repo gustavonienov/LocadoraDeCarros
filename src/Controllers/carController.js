@@ -10,13 +10,15 @@ class CarController {
 
     async show(req, res) {
         const schema = Yup.object().shape({
-            id: Yup.number().required(),
+            placa: Yup.string().required(),
         });
         if (!(await schema.isValid(req.query))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { id } = req.query;
-        let car = await Car.findByPk(id);
+        const { placa } = req.query;
+        let car = await Car.findOne({
+            where: { placa },
+        });
         return res.json(car);
     }
 

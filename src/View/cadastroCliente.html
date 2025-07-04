@@ -42,16 +42,61 @@
             email: document.getElementById('email').value
         };
 
+        data.cpf = data.cpf.replace(/\D/g, '');
+        data.telefone = data.telefone.replace(/\D/g, '');
+
+        if (data.cpf.length !== 11) {
+            alert('CPF inválido.');
+            return;
+        }
+        if (data.telefone.length < 10 || data.telefone.length > 11) {
+            alert('Telefone inválido.');
+            return;
+        }
+
+
         const buscaCpf = await fetch(`/customer/?cpf=${data.cpf}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-        if (buscaCpf.ok) {
-            const clienteExistente = await buscaCpf.json();
-            if (clienteExistente.length > 0) {
-                alert('Já existe um cliente cadastrado com este CPF.');
-                return;
-            }
+        const clienteExistente = await buscaCpf.json();
+        if (clienteExistente) {
+            alert('Já existe um cliente cadastrado com este CPF.');
+            return;
+        }
+
+        const buscaTelefone = await fetch(`/customers/`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const listaTelefone = await buscaTelefone.json();
+        if (listaTelefone.clientes) {
+            listaTelefone.clientes.forEach(cliente => {
+                if (cliente.telefone === data.telefone) {
+                    alert('Já existe um cliente cadastrado com este telefone.');
+                    document.getElementById('telefone').value = '';
+                    data.telefone = '';
+                }
+            });
+        }
+
+        const buscaEmail = await fetch(`/customers/`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const listaEmail = await buscaEmail.json();
+        if (listaEmail.clientes) {
+            listaEmail.clientes.forEach(cliente => {
+                if (cliente.email === data.email) {
+                    alert('Já existe um cliente cadastrado com este email.');
+                    document.getElementById('email').value = '';
+                    data.email = '';
+                }
+            });
+        }
+
+        if (!data.nome || !data.cpf || !data.telefone || !data.email) {
+            return;
         }
 
         const response = await fetch('/customer', {
@@ -62,6 +107,7 @@
 
         if (response.ok) {
             alert('Cliente salvo com sucesso!');
+            window.location.reload();
         } else {
             const error = await response.json();
             alert('Erro: ' + error.error);

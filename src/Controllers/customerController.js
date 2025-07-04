@@ -10,13 +10,15 @@ class customerController {
 
     async show(req, res) {
         const schema = Yup.object().shape({
-            id: Yup.string().required(),
+            cpf: Yup.string().required(),
         });
         if (!(await schema.isValid(req.query))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { id } = req.query;
-        let cust = await Customer.findByPk(id);
+        const { cpf } = req.query;
+        let cust = await Customer.findOne({
+            where: { cpf },
+        });
         return res.json(cust);
     }
 

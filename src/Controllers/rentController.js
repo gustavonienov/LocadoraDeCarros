@@ -40,7 +40,15 @@ class rentController {
             customerId: Yup.number().required(),
             carId: Yup.number().required(),
             valor: Yup.number().required().positive(),
-            dataInicio: Yup.date().required(),
+            dataInicio: Yup.date().required().test(
+                function validaData(value) {
+                    value.setHours(0, 0, 0, 0);
+                    const dataAtual = new Date().setHours(0, 0, 0, 0);
+                    if (value < dataAtual) {
+                        return this.createError();
+                    }
+                    return true;
+            }),
             //dataFim: Yup.date().required(),
         });
         if (!(await schema.isValid(req.body))) {

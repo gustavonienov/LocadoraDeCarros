@@ -16,7 +16,6 @@ class Rent extends Model {
         );
 
         this.addHook('afterUpdate', async (locacao, options) => {
-            console.log('Hook disparado! Locacao ID:', locacao.id);
             if (locacao.dataFim) {
                 const { Car } = sequelize.models;
                 await Car.update(

@@ -9,19 +9,19 @@
     <div class="row mb-3">
         <label for="inputMarca" class="col-sm-2 col-form-label">Marca</label>
         <div class="col-sm-10">
-            <input type="text" id="marca" name="marca" class="form-control" >
+            <input type="text" id="marca" name="marca" class="form-control">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputModelo" class="col-sm-2 col-form-label">Modelo</label>
         <div class="col-sm-10">
-            <input type="text" id="modelo" name="modelo" class="form-control" >
+            <input type="text" id="modelo" name="modelo" class="form-control">
         </div>
     </div>
     <div class="row mb-3">
         <label for="inputAno" class="col-sm-2 col-form-label">Ano</label>
         <div class="col-sm-10">
-            <input type="number" id="ano" name="ano" class="form-control" >
+            <input type="number" id="ano" name="ano" class="form-control">
         </div>
     </div>
     <div class="row mb-3">
@@ -53,16 +53,24 @@
             disponivel: !document.getElementById('alugado').checked
         };
 
+        data.placa = data.placa.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        console.log(data.placa);
+
+        if (data.placa.length !== 7) {
+            alert('Placa inválida.');
+            return;
+        }
+
         const buscaPlaca = await fetch(`/car/?placa=${data.placa}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-        if (buscaPlaca.ok) {
-            const carroExistente = await buscaPlaca.json();
-            if (carroExistente.length > 0) {
-                alert('Já existe um carro cadastrado com essa placa.');
-                return;
-            }
+        console.log(buscaPlaca);
+
+        const carroExistente = await buscaPlaca.json();
+        if (carroExistente) {
+            alert('Já existe um carro cadastrado com essa placa.');
+            return;
         }
 
         const response = await fetch('/car', {
@@ -72,6 +80,7 @@
         });
         if (response.ok) {
             alert('Carro salvo com sucesso!');
+            window.location.reload();
         } else {
             const error = await response.json();
             alert('Erro: ' + error.error);

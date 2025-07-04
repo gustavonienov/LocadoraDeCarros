@@ -23,10 +23,12 @@ module.exports = {
       telefone: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       createdAt: {
         type: Sequelize.DATE,

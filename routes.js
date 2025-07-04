@@ -8,14 +8,14 @@ const routes = new Router();
 routes.get('/cars', carController.index);
 routes.get('/car', carController.show);
 routes.post('/car', carController.store);
-routes.put('/car/:placa',carController.update);
-routes.delete('/car/:placa',carController.destroy);
+routes.put('/car/:id',carController.update);
+routes.delete('/car/:id',carController.destroy);
 
 routes.get('/customers', customerController.index);
 routes.get('/customer', customerController.show);
 routes.post('/customer', customerController.store);
-routes.put('/customer/:cpf',customerController.update);
-routes.delete('/customer/:cpf',customerController.destroy);
+routes.put('/customer/:id',customerController.update);
+routes.delete('/customer/:id',customerController.destroy);
 
 routes.get('/rents', rentController.index);
 routes.get('/rent', rentController.show);

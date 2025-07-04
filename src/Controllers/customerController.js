@@ -10,15 +10,13 @@ class customerController {
 
     async show(req, res) {
         const schema = Yup.object().shape({
-            cpf: Yup.string().required().length(11),
+            id: Yup.string().required(),
         });
         if (!(await schema.isValid(req.query))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { cpf } = req.query;
-        let cust = await Customer.findAll({
-            where: { cpf },
-        });
+        const { id } = req.query;
+        let cust = await Customer.findByPk(id);
         return res.json(cust);
     }
 
@@ -52,7 +50,7 @@ class customerController {
 
     async update(req, res) {
         const schemacpfAtual = Yup.object().shape({
-            cpf: Yup.string().required().length(11),
+            id: Yup.string().required(),
         });
         console.log('req.params:', req.params);
         if (!(await schemacpfAtual.isValid(req.params))) {
@@ -67,7 +65,7 @@ class customerController {
         if (!(await schema.isValid(req.body))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { cpf : key } = req.params;
+        const { id } = req.params;
         const { cpf } = req.body;
         const { nome } = req.body;
         const { telefone } = req.body;
@@ -79,21 +77,21 @@ class customerController {
             email,
         };
         await Customer.update(dados, {
-            where: { cpf: key },
+            where: { id },
         });
         return res.send();
     }
 
     async destroy(req, res) {
         const schemacpfAtual = Yup.object().shape({
-            cpf: Yup.string().required().length(11),
+            id: Yup.string().required(),
         });
         if (!(await schemacpfAtual.isValid(req.params))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { cpf } = req.params;
+        const { id } = req.params;
         await Customer.destroy({
-            where: { cpf },
+            where: { id },
         });
         return res.send();
     }

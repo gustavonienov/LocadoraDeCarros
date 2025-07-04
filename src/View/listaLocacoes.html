@@ -25,7 +25,6 @@
         tbody.innerHTML = '';
 
         locacoes.forEach(locacao => {
-            console.log(locacao);
 
             const row = `
                 <tr>
@@ -35,14 +34,16 @@
                     <td>${locacao.dataFim ? locacao.dataFim.substring(0, 10) : ''}</td>
                     <td>R$${Number(locacao.valor).toFixed(2)}</td>
                     <td>
-                        <button class="btn btn-primary btn-md" onclick="excluirLocacao('${locacao.id}')">Finalizar locação</button>
+                    ${!locacao.dataFim ? 
+                    `<button class="btn btn-primary btn-md" onclick="finalizarLocacao('${locacao.id}')">Finalizar locação</button>` 
+                    : ''}
                     </td>
                 </tr>
             `;
             tbody.innerHTML += row;
         });
     })();
-    async function excluirLocacao(id) {
+    /*async function excluirLocacao(id) {
         if (confirm('Deseja realmente excluir esta locação?')) {
             try {
                 const response = await fetch(`/rent/${id}`, {
@@ -59,5 +60,35 @@
                 alert('Erro ao excluir a locação.');
             }
         }
+    }*/
+
+    async function finalizarLocacao(id) {
+        if (confirm('Deseja realmente finalizar esta locação?')) {
+            try {
+                const responseGet = await fetch(`/rent/?id=${id}`);
+                const locacao = await responseGet.json();
+
+                locacao.dataFim = new Date().toISOString();
+
+                console.log('Body que vou enviar:', locacao);
+
+                const response = await fetch(`/rent/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(locacao)
+                });
+
+                if (response.ok) {
+                    alert('Locação finalizada com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro ao finalizar a locação.');
+                }
+            } catch (error) {
+                console.error('Erro ao finalizar a locação:', error);
+                alert('Erro ao finalizar a locação.');
+            }
+        }
     }
+
 </script>

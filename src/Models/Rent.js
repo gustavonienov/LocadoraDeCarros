@@ -14,6 +14,18 @@ class Rent extends Model {
                 tableName: 'rent',
             }
         );
+
+        this.addHook('afterUpdate', async (locacao, options) => {
+            console.log('Hook disparado! Locacao ID:', locacao.id);
+            if (locacao.dataFim) {
+                const { Car } = sequelize.models;
+                await Car.update(
+                    { disponivel: true },
+                    { where: { id: locacao.carId } }
+                );
+            }
+        });
+
         return this;
     };
 

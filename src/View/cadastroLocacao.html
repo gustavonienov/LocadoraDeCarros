@@ -26,10 +26,10 @@
             <input type="date" class="form-control" id="inputDataInicio" required>
         </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3" hidden>
         <label for="inputDataFim" class="col-sm-2 col-form-label">Data de Fim</label>
         <div class="col-sm-10">
-            <input type="date" class="form-control" id="inputDataFim" required>
+            <input type="date" class="form-control" id="inputDataFim">
         </div>
     </div>
     <div class="row mb-3">
@@ -76,14 +76,14 @@
             const customerId = document.getElementById('selectCliente').value;
             const carId = document.getElementById('selectCarro').value;
             const dataInicio = document.getElementById('inputDataInicio').value;
-            const dataFim = document.getElementById('inputDataFim').value;
+            //const dataFim = document.getElementById('inputDataFim').value;
             const valor = document.getElementById('inputValor').value;
 
             const data = {
                 customerId: Number(customerId),
                 carId: Number(carId),
                 dataInicio,
-                dataFim,
+                //dataFim,
                 valor: Number(valor)
             };
 

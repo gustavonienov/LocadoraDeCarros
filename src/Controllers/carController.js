@@ -10,15 +10,13 @@ class CarController {
 
     async show(req, res) {
         const schema = Yup.object().shape({
-            placa: Yup.string().required().length(7),
+            id: Yup.number().required(),
         });
         if (!(await schema.isValid(req.query))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { placa } = req.query;
-        let car = await Car.findAll({
-            where: { placa },
-        });
+        const { id } = req.query;
+        let car = await Car.findByPk(id);
         return res.json(car);
     }
 
@@ -54,11 +52,10 @@ class CarController {
     }
 
     async update(req, res) {
-        const schemaPlacaAtual = Yup.object().shape({
-            placa: Yup.string().required().length(7),
+        const schemaId = Yup.object().shape({
+            id: Yup.number().required(),
         });
-        console.log('req.params:', req.params);
-        if (!(await schemaPlacaAtual.isValid(req.params))) {
+        if (!(await schemaId.isValid(req.params))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
         const schema = Yup.object().shape({
@@ -69,9 +66,9 @@ class CarController {
             disponivel: Yup.boolean().required(),
         });
         if (!(await schema.isValid(req.body))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Schema is not valid.ss" });
         }
-        const { placa : pa } = req.params;
+        const { id } = req.params;
         const { placa } = req.body;
         const { marca } = req.body;
         const { modelo } = req.body;
@@ -85,21 +82,21 @@ class CarController {
             disponivel,
         };
         await Car.update(dados, {
-            where: { placa: pa },
+            where: { id },
         });
         return res.send();
     }
 
     async destroy(req, res) {
         const schemaPlacaAtual = Yup.object().shape({
-            placa: Yup.string().required().length(7),
+            id: Yup.number().required(),
         });
         if (!(await schemaPlacaAtual.isValid(req.params))) {
             return res.status(400).json({ error: "Schema is not valid." });
         }
-        const { placa } = req.params;
+        const { id } = req.params;
         await Car.destroy({
-            where: { placa },
+            where: { id },
         });
         return res.send();
     }

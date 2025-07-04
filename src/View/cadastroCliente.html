@@ -49,7 +49,7 @@
             alert('CPF inválido.');
             return;
         }
-        if (data.telefone.length < 10 || data.telefone.length > 11) {
+        if (data.telefone.length !== 11) {
             alert('Telefone inválido.');
             return;
         }

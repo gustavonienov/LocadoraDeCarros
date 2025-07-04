@@ -70,7 +70,10 @@
 
                 locacao.dataFim = new Date().toISOString();
 
-                console.log('Body que vou enviar:', locacao);
+                if (locacao.dataFim < locacao.dataInicio) {
+                    alert('A data de fim não pode ser anterior à data de início.');
+                    return;
+                }
 
                 const response = await fetch(`/rent/${id}`, {
                     method: 'PUT',

@@ -1,7 +1,10 @@
 import * as Yup from "yup";
 import Customer from "../Models/Customer.js";
+import { Op } from "sequelize";
+
 
 class customerController {
+
 
     async index(req, res) {
         let custs = await Customer.findAll();
@@ -13,7 +16,7 @@ class customerController {
             cpf: Yup.string().required(),
         });
         if (!(await schema.isValid(req.query))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Dados incorretos." });
         }
         const { cpf } = req.query;
         let cust = await Customer.findOne({
@@ -21,6 +24,7 @@ class customerController {
         });
         return res.json(cust);
     }
+
 
     async store(req, res) {
         const schema = Yup.object().shape({
@@ -30,23 +34,39 @@ class customerController {
             email: Yup.string().required().email(),
         });
         if (!(await schema.isValid(req.body))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Dados incorretos." });
         }
         const { cpf } = req.body;
         const { nome } = req.body;
         const { telefone } = req.body;
         const { email } = req.body;
-        let cust = await Customer.findAll({
-            where: { cpf },
-        });
-        if (!cust || Customer.length == 0) {
-            cust = await Customer.create({
-                cpf,
-                nome,
-                telefone,
-                email,
-            });
+
+        const clienteExistente = await Customer.findOne({
+            where: {
+                [Op.or]: [
+                    { telefone },
+                    { email },
+                    { cpf },
+                ]
+            }
         }
+        )
+
+        if (clienteExistente) {
+            const camposUnicos = ['telefone', 'email', 'cpf'];
+
+            for (const campo of camposUnicos) {
+                if (clienteExistente[campo] === req.body[campo]) {
+                    return res.status(400).json({ error: `Já existe um cliente cadastrado com o ${campo} informado.` });
+                }
+            }
+        }
+        cust = await Customer.create({
+            cpf,
+            nome,
+            telefone,
+            email,
+        });
         return res.json(cust);
     }
 
@@ -56,7 +76,7 @@ class customerController {
         });
         console.log('req.params:', req.params);
         if (!(await schemacpfAtual.isValid(req.params))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Dados incorretos." });
         }
         const schema = Yup.object().shape({
             cpf: Yup.string().required().length(11),
@@ -65,7 +85,7 @@ class customerController {
             email: Yup.string().required().email(),
         });
         if (!(await schema.isValid(req.body))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Dados incorretos." });
         }
         const { id } = req.params;
         const { cpf } = req.body;
@@ -89,7 +109,7 @@ class customerController {
             id: Yup.string().required(),
         });
         if (!(await schemacpfAtual.isValid(req.params))) {
-            return res.status(400).json({ error: "Schema is not valid." });
+            return res.status(400).json({ error: "Dados incorretos." });
         }
         const { id } = req.params;
         await Customer.destroy({

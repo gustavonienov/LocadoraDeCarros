@@ -40,15 +40,7 @@ class rentController {
             customerId: Yup.number().required(),
             carId: Yup.number().required(),
             valor: Yup.number().required().positive(),
-            dataInicio: Yup.date().required().test(
-                function validaData(value) {
-                    value.setHours(0, 0, 0, 0);
-                    const dataAtual = new Date().setHours(0, 0, 0, 0);
-                    if (value < dataAtual) {
-                        return this.createError();
-                    }
-                    return true;
-            }),
+            dataInicio: Yup.date().required(),
             //dataFim: Yup.date().required(),
         });
         if (!(await schema.isValid(req.body))) {
@@ -62,6 +54,7 @@ class rentController {
         let rent = await Rent.findAll({
             where: { carId },
         });
+
         if (!rent || Rent.length == 0) {
             rent = await Rent.create({
                 customerId,
@@ -112,7 +105,7 @@ class rentController {
             where: { id },
             individualHooks: true,
         });
-        
+
         return res.send();
     }
 

@@ -5,7 +5,7 @@ class CarController {
 
     async index(req, res) {
         let cars = await Car.findAll();
-        return res.json({carros: cars});
+        return res.json({ carros: cars });
     }
 
     async show(req, res) {
@@ -38,18 +38,21 @@ class CarController {
         const { modelo } = req.body;
         const { ano } = req.body;
         const { disponivel } = req.body;
-        let car = await Car.findAll({
+        let car = await Car.findOne({
             where: { placa },
         });
-        if (!car || car.length == 0) {
-            car = await Car.create({
-                placa,
-                marca,
-                modelo,
-                ano,
-                disponivel,
-            });
+
+        if (car) {
+            return res.status(400).json({ error: "Já existe um carro cadastrado com a placa informada." });
         }
+        car = await Car.create({
+            placa,
+            marca,
+            modelo,
+            ano,
+            disponivel,
+        });
+
         return res.json(car);
     }
 

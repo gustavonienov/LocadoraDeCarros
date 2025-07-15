@@ -61,18 +61,6 @@
             return;
         }
 
-        const buscaPlaca = await fetch(`/car/?placa=${data.placa}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        console.log(buscaPlaca);
-
-        const carroExistente = await buscaPlaca.json();
-        if (carroExistente) {
-            alert('Já existe um carro cadastrado com essa placa.');
-            return;
-        }
-
         const response = await fetch('/car', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
